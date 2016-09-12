@@ -1,0 +1,58 @@
+<button class="btn btn-default" ng-init="expandForm = false" ng-click="expandForm = !expandForm">Add Worker</button>
+
+<div ng-show="expandForm == true">
+    <form>
+        <div class="form-inline">
+            <label for="nameInput">Name</label>
+            <input type="text" class="form-control" ng-model="name" id="nameInput" placeholder="Worker Name">
+            <label for="wageInput">Wage</label>
+            <input type="number" class="form-control" ng-model="wage" id="wageInput">
+        </div>
+        <button type="submit" ng-click="setWorker(name, wage); expandForm=false" class="btn btn-default">Submit</button>
+    </form>
+</div><br>
+<label>Search: <input class="form-control" ng-model="searchText"></label>
+<ul class="list-group">
+    <li class="list-group-item"  ng-repeat="user in users | filter:searchText">
+        <a classs="btn" ng-click="expand = true">{{user.name}}</a>
+        <div class="panel" ng-show="expand == true">
+            <p>ID: {{user.id}} Wage:{{user.wage}}</p>
+            <button class="btn btn-danger red pull-right" ng-click="deleteWorker(user.id)">Delete</button>
+             <button class="btn btn-default pull-right" style="margin-right: 30px;" ng-click="openEditWorker(user);">Edit</button>
+            <form>
+                <div class="form-inline">
+                    <input type="date" class="form-control" ng-model="startDate">
+                    <input type="date" class="form-control" ng-model="endDate">
+                    <label for="workerSelectInput">Job:</label>
+                    <select class="form-control" ng-model="user.jobSelect" id="workerSelectInput">
+                        <option value="all">All</option>
+                        <option ng-repeat="jobSelect in jobs | orderBy:'location'" value="{{jobSelect.id}}">{{jobSelect.location}}</option>
+                    </select>
+                </div>
+            </form>
+            <button class="btn btn-default" ng-click="works = getWorkerStatus(user.id, startDate, endDate, user.jobSelect)">View</button>
+            <button class="btn btn-default" ng-click="expand = false">X</button>
+            <div ng-show="!!works == true">
+                Total to pay: {{works.totalPay}}
+                <table class="table table-hover">
+                    <tr>
+                        <td class="col-md-2">Job: </td>
+                        <td class="col-md-2">Date: </td>
+                        <td class="col-md-2">Wage: </td>
+                        <td class="col-md-2">Hours: </td>
+                        <td class="col-md-3">Details: </td>
+                        
+                    </tr>
+                    <tr  ng-repeat="work in works | orderBy:'-workDate' track by $index  ">
+                            <td class="col-md-2">{{work.location}}</td>
+                            <td class="col-md-2">{{work.workDate}}</td>
+                            <td class="col-md-2">{{work.wage}}</td>
+                            <td class="col-md-2">{{work.hours}}</td>
+                            <td class="col-md-3">{{work.details}}</td>
+                            
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </li>
+</ul>

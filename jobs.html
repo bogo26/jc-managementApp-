@@ -1,0 +1,90 @@
+<button class="btn btn-default" ng-init="expandForm = false" ng-click="expandForm = !expandForm">Add Job</button>
+
+<div ng-show="expandForm == true">
+    <form>
+        <div class="form-inline">
+            <label for="locationInput">Location</label>
+            <input type="text" class="form-control" ng-model="job.location" id="locationInput" placeholder="Location">
+        </div>
+
+        <div class="form-inline">
+            <label for="startDateInput">Start Date</label>
+            <input type="date" class="form-control" ng-model="job.startDate" ng-model="exampleDate.value" id="startDateInput">
+
+            <label for="endDateInput">End Date</label>
+            <input type="date" class="form-control" ng-model="job.endDate" ng-model="exampleDate.value" id="endDateInput">
+        </div>
+
+        <div class="form-inline">
+            <label for="incomeInput">Income</label>
+            <input type="number" class="form-control" ng-model="job.income" id="incomeInput" placeholder="Income">
+        </div>
+
+        <button type="submit" ng-click="setJob(job); expandForm=false" class="btn btn-default">Submit</button>
+    </form>
+</div>
+<label>Search: <input class="form-control" ng-model="searchJobText"></label>
+<ul class="list-group ">
+    <li class="list-group-item" ng-repeat="job in jobs | filter:searchJobText">
+        <a classs="btn col-md-2" style="font-size: 20px;" ng-init="expand = false" ng-click="expand = !expand"><span class="glyphicon glyphicon-play"></span> {{job.location}}</a>
+        <div class="panel" ng-show="expand == true">
+            <span class="col-md-2">Start Date: {{job.startDate}}</span>
+            <span class="col-md-2">End Date: {{job.endDate}}</span>
+            <span class="col-md-2">Income: {{job.income}} £ </i> </span>
+            <!--<button class="btn btn-default col-md-1 pull-right">Edit</button>-->
+            <button class="btn btn-danger col-md-1 red pull-right" ng-click="deleteJob(job.id)">Delete</button>
+        <br><br>
+        <form class="form-inline">
+            <label>Start Date:
+                <input type="date" name="input" ng-model="startDate" ng-trim="false">
+            </label>
+            <label>End Date:
+                <input type="date" name="input" ng-model="endDate" ng-trim="false">
+            </label>
+            <label for="workerSelectInput">Worker:</label>
+                <select class="form-control" ng-model="job.workerSelect" id="workerSelectInput" ng-change="wage = getWorkerWage(job.workerSelect);">
+                    <option value="all">All</option>
+                    <option ng-repeat="workerSelect in users | orderBy:'name'" value="{{workerSelect.id}}">{{workerSelect.name}}</option>
+                </select>
+            <label>Wage:
+                <input type="decimal" step="2" name="input" ng-model="wage" min="0" max="999">
+            </label>
+            <label>Hours:
+                <input type="number" name="input" ng-model="hours" ng-trim="false" min="0" max="99">
+            </label>
+            <label>Details:
+                <input type="text" name="input" ng-model="details" ng-trim="false" >
+            </label>
+        </form>
+        <button class="btn btn-default" ng-click="jobWages = getJobStatus(job.id, startDate, endDate, job.workerSelect)">Display status</button>
+        <button class="btn btn-default" ng-click="setWage(job.id, startDate, job.workerSelect, wage, hours, details); wage=0; hours=0; details='';">Add wage</button>
+       </div>
+        <button class="btn btn-default" ng-show="!!jobWages == true" ng-click="jobWages = false">X</button>
+        <div id="workersStatus" ng-show="!!jobWages == true">
+            total payed: {{jobWages.totalPayed}}
+            <table class="table table-hover">
+                <tr>
+                    <td class="col-md-1">Worker</td>
+                    <td class="col-md-1">Date</td>
+                    <td class="col-md-1">Wage</td>
+                    <td class="col-md-1">Hours</td>
+                    <td class="col-md-1">Day Pay</td>
+                    <td class="col-md-1">Details</td>
+                    <td class="col-md-1"></td>
+                </tr>
+                <tr  ng-repeat="wage in jobWages | orderBy:'-workDate' track by $index  ">
+                    <td class="col-md-1"> {{wage.name}}</td>
+                    <td class="col-md-1"> {{wage.workDate}}</td>
+                    <td class="col-md-1"> {{wage.wage}}</td>
+                    <td class="col-md-1"> {{wage.hours}}</td>
+                    <td class="col-md-1"> {{wage.dayPay}}</td>
+                    <td class="col-md-1"> {{wage.details}}</td>
+                    <td class="col-md-1">
+                    	<button class="btn btn-default" ng-click="deleteWage(wage.idWage);">X</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </li>
+</ul>

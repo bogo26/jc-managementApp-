@@ -1,0 +1,25 @@
+<form>
+<div class="form-inline">
+            <label for="raportStartDateInput">Start Date</label>
+            <input type="date" class="form-control" ng-model="startRaportDate" id="raportStartDateInput">
+</div>
+<button type="submit" ng-click="generateSimpleRapport(startRaportDate); expandForm=false" class="btn btn-default">Generate 2 week simple rapport</button>
+<!--<button type="submit" ng-click="generateComplexRapport(startRaportDate); expandForm=false" class="btn btn-default">Generate 2 week detailed rapport</button>-->
+</form>
+
+<div class="container">
+	<table class="table col-md-2">
+	    <thead>
+	      <tr>
+	        <th>Name</th>
+	        <th>Wage</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat='rapport in rapportFinal' ng-class="rowClass(person)">
+	      	<td >{{rapport .name}}</td>
+	       	<td >{{rapport .total}}</td>
+	      </tr>
+	    </tbody>
+	 </table>
+ </div>

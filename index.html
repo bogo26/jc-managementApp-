@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
+
+<script src="scripts/app.js"></script>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+<body>
+<!--<h1 class='red'>Lucrez la site, te rog sa nu il folosesti momentan, Bogdan</h1>-->
+    <div ng-app="myApp" ng-controller="customersCtrl">
+    <script type="text/ng-template" id="workerModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Edit worker</h3>
+        </div>
+        <div class="modal-body">
+            <label for="nameInput">Name</label>
+            <input type="text" class="form-control" ng-model="workerModal.name" id="nameInput">
+            <label for="wageInput">Wage</label>
+            <input type="number" class="form-control" ng-model="workerModal.wage" id="wageInput">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+	
+        <div ng-show="state.workers">             
+            <i class='fa fa-circle-o-notch fa-spin '></i>
+            Loading workers 	    
+        </div>
+        
+        <div ng-show="state.jobs">
+            <i class='fa fa-circle-o-notch fa-spin '></i>
+  	    Loading jobs  	    
+	</div>
+	
+        <div ng-show="state.wages">            
+	    <i class='fa fa-circle-o-notch fa-spin '></i>
+            Loading wages            
+        </div>
+     
+        <section id='menu' ng-init="tab = 1">
+            <ul class="nav nav-pills">
+                <li><a href ng-click="tab = 1">Workers</a></li>
+                <li><a href ng-click="tab = 2">Jobs</a></li>
+                <li><a href ng-click="tab = 3">Raports</a></li>
+            </ul>
+
+
+
+            <div class="panel" ng-show="tab === 1">
+                <div ng-include=" 'workers.html' "></div>
+            </div>
+
+            <div class="panel" ng-show="tab === 2">
+                <div ng-include=" 'jobs.html' "></div>
+            </div>
+            
+            <div class="panel" ng-show="tab === 3">
+                <div ng-include=" 'raports.html' "></div>
+            </div>
+        </section>
+       
+    </div>
+
+</body>
+</html>
